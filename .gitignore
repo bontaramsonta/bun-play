@@ -1,0 +1,12 @@
+logs
+_.log
+npm-debug.log_
+.cache
+node_modules/
+.env.*
+env.json
+.next
+out
+dist
+.DS_Store
+image
