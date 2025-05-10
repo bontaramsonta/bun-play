@@ -1,24 +1,27 @@
-import { readableStreamToArrayBuffer, serve, sha } from "bun";
-import sharp from "sharp";
+import { serve } from "bun";
 
 serve({
-  async fetch(request, server) {
-    if (request.body !== null) {
-      const body = await readableStreamToArrayBuffer(request.body);
-      const buffer = await sharp(body).tint({ r: 0, g: 0, b: 255 }).toBuffer({
-        resolveWithObject: true,
-        fileOut: "img.png",
-      });
-      console.log(buffer.info);
-      return new Response(buffer.data, {
-        headers: {
-          "Content-Type": "image/png",
-        },
-      });
-    }
-    return new Response("Hello, world!");
+  routes: {
+    "/api/status": new Response("OK"),
+
+    "/users/:id": (req) => {
+      return new Response(`Hello User ${req.params.id}!`);
+    },
+
+    "/api/posts": {
+      GET: () => new Response("List posts"),
+      POST: async (req) => {
+        const body = await req.json();
+        return Response.json({ created: true });
+      },
+    },
+  },
+
+  fetch(req) {
+    return new Response("Not Found", { status: 404 });
   },
   port: 3040,
   development: true,
 });
+
 console.log("Server started at http://localhost:3040");
