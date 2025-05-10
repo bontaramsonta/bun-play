@@ -17,7 +17,7 @@ serve({
     },
   },
 
-  fetch(req) {
+  fetch() {
     return new Response("Not Found", { status: 404 });
   },
   port: 3040,
